@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Team · Ai-Aero{% endblock %}
+
+{% block content %}
+<section class="section" style="padding:60px 0;">
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Our Team</h2>
+    <div><span>Meet the</span> <span class="description-title">People Behind Ai-Aero</span></div>
+  </div>
+
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    {% if members %}
+      <div class="row gy-4 justify-content-center">
+        {% for m in members %}
+          <div class="col-md-6 col-lg-4 d-flex">
+            <div class="card border-0 shadow-sm w-100">
+              {% if m.photo %}
+                <img src="{{ m.photo.url }}" class="card-img-top" alt="{{ m.name }}" style="height:220px; object-fit:cover;">
+              {% endif %}
+              <div class="card-body">
+                <h5 class="card-title mb-1">{{ m.name }}</h5>
+                <p class="text-muted mb-2">{{ m.role }}</p>
+                {% if m.quote %}
+                  <p class="mb-2"><i class="bi bi-quote"></i> {{ m.quote }}</p>
+                {% endif %}
+                {% if m.skills %}
+                  <!-- Preserve line breaks exactly as entered in Admin -->
+                  <div class="small" style="white-space:pre-line; line-height:1.6;">
+                    {{ m.skills }}
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-center text-muted">No team members added yet.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

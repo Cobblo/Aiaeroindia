@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Software Development – Ai-Aero{% endblock %}
+
+{% block content %}
+<section id="details" class="details section">
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Software Development</h2>
+  </div>
+
+  <div class="container">
+    <div class="row gy-4 align-items-center features-item">
+      <div class="col-md-5 order-1 order-md-2 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="200">
+        <img src="{% static 'assets/img/software_img.webp' %}" class="img-fluid" alt="Software development">
+      </div>
+      <div class="col-md-7 order-2 order-md-1" data-aos="fade-up" data-aos-delay="200">
+        <h3>SOFTWARE DEVELOPMENT</h3>
+        <p>We specialize in crafting powerful, user-centric software that drives results…</p>
+        <p><strong>✅ Custom Software Development:</strong> Tailor-made, scalable, secure, future-ready.</p>
+        <p><strong>✅ Firmware Development:</strong> Reliable, efficient, and hardware-optimized solutions.</p>
+        <p><strong>✅ Mobile &amp; Web Apps:</strong> Interactive, responsive, intuitive apps.</p>
+        <p><strong>✅ AI, ML &amp; Automation:</strong> Smarter systems, faster processes, better decisions.</p>
+        <p><strong>✅ UI/UX Design:</strong> Stunning visuals with seamless experiences.</p>
+        <p><strong>✅ Cloud &amp; DevOps:</strong> Speed, stability, scalability.</p>
+        <p>Let’s transform your digital presence and build what’s next.</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

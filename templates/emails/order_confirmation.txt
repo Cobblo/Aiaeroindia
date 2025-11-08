@@ -1,0 +1,17 @@
+Thanks for your order!
+
+Order ID: #{{ order.id }}
+Placed on: {{ order.created_at|date:"M d, Y, g:i a" }}
+Status: Paid
+
+Items:
+{% for i in items %}- {{ i.name }} × {{ i.qty }} : ₹ {{ i.price }}
+{% endfor %}
+Price (Subtotal): ₹ {{ subtotal_str }}
+Tax{% if tax_rate_pct %} ({{ tax_rate_pct }}%){% endif %}: ₹ {{ tax_str }}
+Shipping: ₹ {{ shipping_str }}
+Grand Total: ₹ {{ total_str }}
+
+Your PDF invoice is attached.
+
+— Team Ai-Aero

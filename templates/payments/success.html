@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Payment Successful – Order #{{ order.id }}{% endblock %}
+
+{% block content %}
+<style>
+  .success-wrap{padding-top:96px;padding-bottom:48px}
+  .invoice-card{
+    border:0; border-radius:16px; background:#fff;
+    box-shadow: 0 10px 25px rgba(0,0,0,.07), 0 4px 12px rgba(0,0,0,.06);
+  }
+  .pill{display:inline-flex;align-items:center;gap:.5rem;
+        background:#e8f5ee;color:#117a37;border-radius:999px;
+        padding:.35rem .8rem;font-weight:600}
+  .muted{color:#6b7280}
+  .hr{border:0;border-top:1px solid #eef0f3;margin:1rem 0}
+  @media print{
+    .no-print{display:none!important}
+    .success-wrap{padding-top:0}
+    body{background:#fff}
+  }
+</style>
+
+<section class="success-wrap container">
+  <div class="text-center mb-4">
+    <div class="display-6 fw-bold mb-2">
+      <i class="bi bi-check-circle-fill" style="vertical-align:-.15em;"></i>
+      Thank you!
+    </div>
+    <div class="pill">
+      Payment successful · Order #{{ order.id }}
+    </div>
+  </div>
+
+  <div class="card invoice-card">
+    <div class="card-body p-4 p-lg-5">
+      <div class="row g-4 align-items-start">
+        <div class="col-lg-6">
+          <h5 class="mb-1">Receipt</h5>
+          <div class="muted">Placed on {{ order.created_at|date:"d M Y, h:i A" }}</div>
+          {% if order.status %}
+            <div class="muted">Status: <span class="text-success fw-semibold">{{ order.status|capfirst }}</span></div>
+          {% endif %}
+        </div>
+        <div class="col-lg-6 text-lg-end">
+          <div class="fs-6 muted">Order Total</div>
+          <div class="h3 fw-bold">₹ {{ order.total }}</div>
+          <div class="muted">Includes shipping & taxes (if any)</div>
+        </div>
+      </div>
+
+      <div class="hr"></div>
+
+      <div class="row g-4">
+        <div class="col-lg-6">
+          <h6 class="fw-semibold mb-2">Billed To</h6>
+          {% with a=order.address %}
+            <div>{{ a.full_name }}</div>
+            <div class="muted">
+              {{ a.line1 }}{% if a.line2 %}, {{ a.line2 }}{% endif %}<br>
+              {{ a.city }}, {{ a.state }} {{ a.pincode }}<br>
+              {{ a.country }}
+            </div>
+            <div class="muted">Phone: {{ a.phone }}</div>
+          {% endwith %}
+          <div class="muted">Email: {{ order.email }}</div>
+        </div>
+        <div class="col-lg-6">
+          <h6 class="fw-semibold mb-2">Shipping</h6>
+          {% with a=order.address %}
+            <div>{{ a.full_name }}</div>
+            <div class="muted">
+              {{ a.line1 }}{% if a.line2 %}, {{ a.line2 }}{% endif %}<br>
+              {{ a.city }}, {{ a.state }} {{ a.pincode }}<br>
+              {{ a.country }}
+            </div>
+          {% endwith %}
+        </div>
+      </div>
+
+      <div class="hr"></div>
+
+      <h6 class="fw-semibold mb-3">Items</h6>
+      <div class="table-responsive">
+        <table class="table align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Product</th>
+              <th class="text-center" style="width:120px;">Qty</th>
+              <th class="text-end" style="width:160px;">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            {# Use the related_name "items" on OrderItem. If you didn't set it, change to order.orderitem_set.all #}
+            {% for it in order.items.all %}
+              <tr>
+                <td>
+                  <div class="fw-semibold">
+                    {% if it.product.name %}
+                      {{ it.product.name }}
+                    {% else %}
+                      {{ it.product }}
+                    {% endif %}
+                  </div>
+                  <div class="muted small">SKU: {{ it.product.sku|default:it.product.id }}</div>
+                </td>
+                <td class="text-center">{{ it.quantity }}</td>
+                <td class="text-end">₹ {{ it.price }}</td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="3" class="muted">No items were found for this order.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+          <tfoot>
+            <tr>
+              <th colspan="2" class="text-end">Subtotal</th>
+              <th class="text-end">₹ {{ order.subtotal|default:order.total }}</th>
+            </tr>
+            {% if order.shipping %}
+              <tr>
+                <th colspan="2" class="text-end">Shipping</th>
+                <th class="text-end">₹ {{ order.shipping }}</th>
+              </tr>
+            {% endif %}
+            {% if order.tax %}
+              <tr>
+                <th colspan="2" class="text-end">Tax</th>
+                <th class="text-end">₹ {{ order.tax }}</th>
+              </tr>
+            {% endif %}
+            <tr class="table-light">
+              <th colspan="2" class="text-end"><strong>Total Paid</strong></th>
+              <th class="text-end"><strong>₹ {{ order.total }}</strong></th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div class="d-flex flex-wrap gap-2 justify-content-between mt-4 no-print">
+        <a href="{% url 'catalog:product_list' %}" class="btn btn-outline-secondary">
+          ← Continue shopping
+        </a>
+        <div class="d-flex gap-2">
+          <button class="btn btn-outline-secondary" onclick="window.print()">
+            <i class="bi bi-printer"></i> Print
+          </button>
+          <a href="{% url 'orders:my_orders' %}" class="btn btn-primary" style="background:#002244;border-color:#002244;">
+            View my orders
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

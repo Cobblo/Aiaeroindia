@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block title %}Order #{{ order.id }} – Ai-Aero{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h1 class="h4 mb-4">Order #{{ order.id }}</h1>
+
+  <div class="row g-4">
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title mb-3">Items</h5>
+          <div class="table-responsive">
+            <table class="table align-middle">
+              <thead>
+                <tr class="small text-uppercase text-muted">
+                  <th>Product</th>
+                  <th class="text-center">Qty</th>
+                  <th class="text-end">Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for it in items %}
+                <tr>
+                  <td>
+                    <div class="fw-semibold">{{ it.product.name|default:it.product }}</div>
+                    <div class="text-muted small">
+                      SKU: {{ it.product.sku|default:it.product.id }}
+                    </div>
+                  </td>
+                  <td class="text-center">{{ it.quantity }}</td>
+                  <td class="text-end">₹ {{ it.price|floatformat:2|intcomma }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th colspan="2" class="text-end">Subtotal</th>
+                  <th class="text-end">₹ {{ order.subtotal|floatformat:2|intcomma }}</th>
+                </tr>
+                <tr>
+                  <th colspan="2" class="text-end">Shipping</th>
+                  <th class="text-end">
+                    {% if order.shipping %}₹ {{ order.shipping|floatformat:2|intcomma }}{% else %}Free{% endif %}
+                  </th>
+                </tr>
+                <tr>
+                  <th colspan="2" class="text-end">Tax{% if order.tax %} ({{ tax_rate_pct|default:"18" }}%){% endif %}</th>
+                  <th class="text-end">₹ {{ order.tax|floatformat:2|intcomma }}</th>
+                </tr>
+                <tr>
+                  <th colspan="2" class="text-end">Total</th>
+                  <th class="text-end fw-bold">₹ {{ order.total|floatformat:2|intcomma }}</th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title mb-3">Shipping Address</h5>
+          <div class="small">
+            {{ order.address.full_name }}<br>
+            {{ order.address.line1 }}{% if order.address.line2 %}, {{ order.address.line2 }}{% endif %}<br>
+            {{ order.address.city }}, {{ order.address.state }} - {{ order.address.pincode }}<br>
+            {{ order.address.country }}<br>
+            Phone: {{ order.address.phone }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

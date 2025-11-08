@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Blog — Ai-Aero{% endblock %}
+
+{% block content %}
+<style>
+  .blog-wrap{padding:48px 0}
+  .post-card{border:1px solid #eef0f4;border-radius:14px;padding:18px 20px;box-shadow:0 8px 20px rgba(0,0,0,.04)}
+  .post-title{font-weight:800;margin:0 0 .25rem}
+  .post-title a{
+    color:#002244;
+    text-decoration:none;
+  }
+  .post-title a:hover{color:#001122}
+  .post-meta{color:#6b7280;font-size:.95rem;display:flex;gap:.5rem;align-items:center}
+  .post-ex{color:#4b5563;margin:.5rem 0 0}
+  .read-more{margin-top:10px}
+  .read-more .btn{
+    border-color:#002244;
+    color:#002244;
+  }
+  .read-more .btn:hover{
+    background:#002244;
+    color:#fff;
+  }
+
+  /* ✅ Fix heading too close to edge on mobile */
+  @media (max-width: 576px) {
+    .blog-heading {
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+  }
+</style>
+
+<div class="container blog-wrap">
+  <!-- add blog-heading class -->
+  <h2 class="mb-4 blog-heading">Blog</h2>
+
+  <div class="d-grid gap-3">
+    {% for post in posts %}
+      <article class="post-card">
+        <h3 class="post-title">
+          <a href="{% url 'blog:detail' post.slug %}">{{ post.title }}</a>
+        </h3>
+        <div class="post-meta">
+          <i class="bi bi-calendar3"></i>
+          <time datetime="{{ post.created_at|date:'c' }}">{{ post.created_at|date:"M d, Y" }}</time>
+          {% if post.author %}<span>•</span><span>by {{ post.author }}</span>{% endif %}
+          {% if post.category %}<span>•</span><span>{{ post.category }}</span>{% endif %}
+        </div>
+        {% if post.excerpt %}
+          <p class="post-ex">{{ post.excerpt }}</p>
+        {% else %}
+          <p class="post-ex">{{ post.content|striptags|truncatechars:150 }}</p>
+        {% endif %}
+        <div class="read-more">
+          <a class="btn btn-sm btn-outline-primary" href="{% url 'blog:detail' post.slug %}">Read more</a>
+        </div>
+      </article>
+    {% empty %}
+      <p>No posts yet.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

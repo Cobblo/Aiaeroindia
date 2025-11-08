@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5" style="max-width:500px;">
+  <h3>Pay for Order #{{ order.id }}</h3>
+  <p>Total: ₹ {{ order.total }}</p>
+  <button id="rzp-button" 
+          class="btn w-100" 
+          style="background:#002244; color:#fff; border:1px solid #002244;">
+    Pay with Razorpay
+  </button>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+const options = {
+  key: "{{ razorpay_key }}",
+  amount: "{{ amount_paise }}",
+  currency: "{{ currency }}",
+  name: "Ai-Aero",
+  description: "Order #{{ order.id }}",
+  order_id: "{{ razorpay_order_id }}",
+  prefill: {
+    name: "{{ customer_name }}",
+    email: "{{ customer_email }}",
+    contact: "{{ customer_contact }}"
+  },
+  handler: function (response) {
+    // Auto-submit to /payments/verify/
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = "{% url 'payments:verify' %}";
+    form.innerHTML = `
+      {% csrf_token %}
+      <input type="hidden" name="razorpay_order_id" value="${response.razorpay_order_id}">
+      <input type="hidden" name="razorpay_payment_id" value="${response.razorpay_payment_id}">
+      <input type="hidden" name="razorpay_signature" value="${response.razorpay_signature}">
+    `;
+    document.body.appendChild(form);
+    form.submit();
+  }
+};
+document.getElementById("rzp-button").onclick = function(e){
+  e.preventDefault();
+  new Razorpay(options).open();
+}
+</script>
+{% endblock %}

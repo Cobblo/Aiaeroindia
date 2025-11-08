@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Login – Ai-Aero{% endblock %}
+
+{% block content %}
+<style>
+  .auth-wrap { max-width: 400px; margin: 110px auto 60px; }
+  .auth-card { border: none; border-radius: 16px; box-shadow: 0 12px 28px rgba(0,0,0,.08); }
+  .btn-brand { background:#002244;color:#fff;border-color:#002244 }
+  .btn-brand:hover { filter:brightness(1.08) }
+  .password-wrapper { position:relative }
+  .password-wrapper input { padding-right:40px }
+  .toggle-password {
+      position:absolute; right:12px; top:50%; transform:translateY(-50%);
+      cursor:pointer; color:#666; font-size:18px;
+  }
+</style>
+
+<div class="auth-wrap container">
+  <div class="card auth-card">
+    <div class="card-body p-4">
+      <h1 class="h4 mb-3">Login</h1>
+
+      {% if form.errors %}
+        <div class="alert alert-danger py-2">Please check your username and password.</div>
+      {% endif %}
+
+      <form method="post" action="">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label class="form-label" for="id_username">Username</label>
+          {{ form.username }}
+        </div>
+
+        <div class="mb-3 password-wrapper">
+          <label class="form-label" for="id_password">Password</label>
+          {{ form.password }}
+          <span class="toggle-password" onclick="togglePassword()">
+            <i id="eye-icon" class="bi bi-eye"></i>
+          </span>
+        </div>
+
+        <button type="submit" class="btn btn-brand w-100">Sign in</button>
+      </form>
+
+      <div class="text-center mt-3">
+        <a href="{% url 'password_reset' %}" class="text-decoration-none">Forgot password?</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap Icons CDN (for the eye icon) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<script>
+function togglePassword() {
+  const pwdInput = document.getElementById("id_password");
+  const eyeIcon = document.getElementById("eye-icon");
+  if (pwdInput.type === "password") {
+    pwdInput.type = "text";
+    eyeIcon.classList.remove("bi-eye");
+    eyeIcon.classList.add("bi-eye-slash");
+  } else {
+    pwdInput.type = "password";
+    eyeIcon.classList.remove("bi-eye-slash");
+    eyeIcon.classList.add("bi-eye");
+  }
+}
+</script>
+{% endblock %}

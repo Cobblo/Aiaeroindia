@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% block title %}Aiaeroindia{% endblock %}
+
+{% block content %}
+<div class="container py-5" style="max-width:980px;">
+  <div class="row g-4">
+    <!-- Left: User card -->
+    <div class="col-12 col-lg-4">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body">
+          <div class="d-flex align-items-center gap-3">
+            <div class="rounded-circle d-inline-flex align-items-center justify-content-center"
+                 style="width:64px;height:64px;background:#002244;color:#fff;font-weight:700;">
+              {{ user_obj.first_name|first|default:user_obj.username|first|upper }}
+            </div>
+            <div>
+              <h5 class="mb-0">{{ user_obj.get_full_name|default:user_obj.username }}</h5>
+              <small class="text-muted">{{ user_obj.email }}</small>
+            </div>
+          </div>
+
+          <hr class="my-4">
+
+          {% if not edit_mode %}
+            <div class="vstack gap-2">
+              <div class="d-flex justify-content-between">
+                <span class="text-muted">Mobile</span>
+                <span>{{ address.phone|default:"—" }}</span>
+              </div>
+              <div class="d-flex justify-content-between">
+                <span class="text-muted">Country</span>
+                <span>{{ address.country|default:"—" }}</span>
+              </div>
+            </div>
+
+            <a href="?edit=1" class="btn w-100 mt-4" style="background:#002244;color:#fff;">Edit Profile</a>
+            <a href="{% url 'accounts:password_change' %}" class="btn btn-light w-100 mt-2">Change Password</a>
+          {% else %}
+            <form method="post" class="vstack gap-3">{% csrf_token %}
+              {{ uform.non_field_errors }}
+              <div>
+                <label class="form-label">First name</label>
+                {{ uform.first_name }}
+              </div>
+              
+              <div>
+                <label class="form-label">Email</label>
+                {{ uform.email }}
+              </div>
+              <button class="btn w-100 mt-2" style="background:#002244;color:#fff;">Save</button>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Address / Address form -->
+    <div class="col-12 col-lg-8">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body">
+          <h5 class="mb-3">Default Address</h5>
+
+          {% if not edit_mode %}
+            {% if address %}
+              <div class="p-3 border rounded">
+                <div class="fw-semibold">{{ address.full_name }}</div>
+                <div>{{ address.line1 }}</div>
+                {% if address.line2 %}<div>{{ address.line2 }}</div>{% endif %}
+                <div>{{ address.city }}, {{ address.state }} {{ address.pincode }}</div>
+                <div>{{ address.country }}</div>
+                <div class="text-muted mt-2">Phone: {{ address.phone }}</div>
+                {% if address.email %}
+                  <div class="text-muted">Email: {{ address.email }}</div>
+                {% endif %}
+                {% if address.is_default %}
+                  <span class="badge text-bg-primary mt-2">Default</span>
+                {% endif %}
+              </div>
+            {% else %}
+              <p class="text-muted mb-0">You haven’t added an address yet.</p>
+            {% endif %}
+          {% else %}
+            <form method="post" class="vstack gap-3">{% csrf_token %}
+              {{ aform.non_field_errors }}
+              <div>
+                <label class="form-label">Full name</label>
+                {{ aform.full_name }}
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="form-label">Mobile</label>
+                  {{ aform.phone }}
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Email</label>
+                  {{ aform.email }}
+                </div>
+              </div>
+              <div>
+                <label class="form-label">Address line 1</label>
+                {{ aform.line1 }}
+              </div>
+              <div>
+                <label class="form-label">Address line 2</label>
+                {{ aform.line2 }}
+              </div>
+              <div class="row">
+                <div class="col-md-5">
+                  <label class="form-label">City</label>
+                  {{ aform.city }}
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">State</label>
+                  {{ aform.state }}
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">PIN</label>
+                  {{ aform.pincode }}
+                </div>
+              </div>
+              <div>
+                <label class="form-label">Country</label>
+                {{ aform.country }}
+              </div>
+              <div class="form-check mt-2">
+                {{ aform.is_default }} <label class="form-check-label ms-1">Make this my default address</label>
+              </div>
+
+              <div class="d-flex gap-2">
+                <button class="btn mt-3" style="background:#002244;color:#fff;">Save Address</button>
+                <a href="{% url 'accounts:profile' %}" class="btn btn-light mt-3">Cancel</a>
+              </div>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,127 @@
+{% load humanize %}
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Invoice #{{ order.id }}</title>
+  <style>
+    body { font-family: Arial, sans-serif; font-size: 12px; color: #333; }
+    .wrap { width: 700px; margin: 0 auto; }
+    h1 { font-size: 20px; margin: 0; }
+    .muted { color: #666; }
+    .box { border:1px solid #e5e5e5; border-radius:8px; padding:12px; }
+    table { width:100%; border-collapse: collapse; }
+    th, td { padding:8px; border-bottom:1px solid #eee; vertical-align: top; }
+    th { background:#f6f7fb; text-align:left; }
+    .totals td { border:none; }
+    .right { text-align:right; }
+    .logo { height:38px; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Header -->
+  <table style="margin-bottom: 12px;">
+    <tr>
+      <td>
+        <h1>Invoice</h1>
+        <div class="muted">Order #{{ order.id }}</div>
+        <div class="muted">Placed on {{ order.created_at|date:"M d, Y, g:i a" }}</div>
+      </td>
+      <td class="right">
+        {% if company_logo_b64 %}
+          <img src="data:image/png;base64,{{ company_logo_b64 }}" class="logo" alt="Company Logo"><br>
+        {% endif %}
+        <strong>{{ company_name|default:"Ai-Aero India Pvt Ltd" }}</strong><br>
+        {{ company_email|default:"info@aiaeroindia.com" }}
+      </td>
+    </tr>
+  </table>
+
+  <!-- Addresses -->
+  <table style="margin-bottom: 12px;">
+    <tr>
+      <td class="box" style="width:50%;">
+        <strong>Bill To</strong><br>
+        {% if order.address %}
+          {{ order.address.full_name|default:"" }}<br>
+          {{ order.address.line1|default:"" }}{% if order.address.line2 %}, {{ order.address.line2 }}{% endif %}<br>
+          {{ order.address.city|default:"" }}{% if order.address.state %}, {{ order.address.state }}{% endif %}{% if order.address.zip %} {{ order.address.zip }}{% endif %}<br>
+          {{ order.address.country|default:"" }}<br>
+          {{ order.email|default:order.address.email|default:"" }}
+        {% else %}
+          {{ order.billing_name|default:"" }}<br>
+          {{ order.billing_address|default:"" }}<br>
+          {{ order.billing_city|default:"" }} {% if order.billing_state %}{{ order.billing_state }} {% endif %}{% if order.billing_zip %}{{ order.billing_zip }}{% endif %}<br>
+          {{ order.billing_country|default:"" }}<br>
+          {{ order.email|default:"" }}
+        {% endif %}
+      </td>
+      <td style="width:16px;"></td>
+      <td class="box" style="width:50%;">
+        <strong>Ship To</strong><br>
+        {% if order.address %}
+          {{ order.address.full_name|default:"" }}<br>
+          {{ order.address.line1|default:"" }}{% if order.address.line2 %}, {{ order.address.line2 }}{% endif %}<br>
+          {{ order.address.city|default:"" }}{% if order.address.state %}, {{ order.address.state }}{% endif %}{% if order.address.zip %} {{ order.address.zip }}{% endif %}<br>
+          {{ order.address.country|default:"" }}
+        {% else %}
+          {{ order.shipping_name|default:"" }}<br>
+          {{ order.shipping_address|default:"" }}<br>
+          {{ order.shipping_city|default:"" }} {% if order.shipping_state %}{{ order.shipping_state }} {% endif %}{% if order.shipping_zip %}{{ order.shipping_zip }}{% endif %}<br>
+          {{ order.shipping_country|default:"" }}
+        {% endif %}
+      </td>
+    </tr>
+  </table>
+
+  <!-- Line items -->
+  <table>
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th class="right">Qty</th>
+        <th class="right">Price</th>
+        <th class="right">Line Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for li in line_items %}
+      <tr>
+        <td>{{ li.name }}</td>
+        <td class="right">{{ li.qty }}</td>
+        <td class="right">₹ {{ li.price }}</td>
+        <td class="right">₹ {{ li.line_total }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Totals -->
+  <table style="margin-top:10px;">
+    <tr class="totals">
+      <td></td><td></td>
+      <td class="right">Subtotal</td>
+      <td class="right">₹ {{ subtotal_str }}</td>
+    </tr>
+    <tr class="totals">
+      <td></td><td></td>
+      <td class="right">Shipping</td>
+      <td class="right">{% if shipping_str != "0.00" %}₹ {{ shipping_str }}{% else %}Free{% endif %}</td>
+    </tr>
+    <tr class="totals">
+      <td></td><td></td>
+      <td class="right">Tax ({{ tax_rate_pct }}%)</td>
+      <td class="right">₹ {{ tax_str }}</td>
+    </tr>
+    <tr class="totals">
+      <td></td><td></td>
+      <td class="right"><strong>Total Paid</strong></td>
+      <td class="right"><strong>₹ {{ total_str }}</strong></td>
+    </tr>
+  </table>
+
+</div>
+</body>
+</html>

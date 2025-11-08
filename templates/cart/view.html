@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Your Cart{% endblock %}
+
+{% block content %}
+<style>
+  /* Hide number spinners */
+  input[type=number]::-webkit-outer-spin-button,
+  input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  input[type=number] { -moz-appearance: textfield; }
+
+  /* Qty group */
+  .qty-group { display:inline-flex; align-items:center; gap:8px; }
+  .qty-btn {
+    background:#f3f4f6; color:#111827; border:1px solid #e5e7eb;
+    width:32px; height:32px; padding:0; line-height:1; text-align:center;
+    border-radius:6px;
+  }
+  .qty-btn:disabled { opacity:.5; cursor:not-allowed; }
+  .qty-input { width:72px; text-align:center; }
+
+  .table thead th { white-space:nowrap; }
+
+  .totals-card {
+    max-width: 420px; margin-left:auto;
+    border:0; border-radius:14px; background:#fff;
+    box-shadow: 0 8px 22px rgba(0,0,0,.06);
+  }
+  .totals-row { display:flex; justify-content:space-between; gap:16px; padding:8px 0; }
+  .totals-row.muted { color:#6b7280; }
+  .totals-divider { height:1px; background:#e5e7eb; margin:6px 0; }
+  .grand { font-weight:800; font-size:1.05rem; }
+
+  /* Brand button for “Browse Products” etc. */
+  .btn-brand { background:#002244; border-color:#002244; color:#fff; }
+  .btn-brand:hover { filter:brightness(1.05); color:#fff; }
+</style>
+
+<div class="container py-5">
+  <h2 class="mb-4">Your Cart</h2>
+
+  {% if cart.count %}
+    <div class="table-responsive mb-3">
+      <table class="table align-middle">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th class="text-center" style="width:200px;">Qty</th>
+            <th class="text-end">Price</th>
+            <th class="text-end">Subtotal</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in cart %}
+          <tr>
+            <td>
+              <a href="{{ item.product.get_absolute_url }}">{{ item.product.name }}</a>
+            </td>
+
+            <td class="text-center">
+              <form method="post" action="{% url 'cart:update' item.product_id %}" class="qty-group">
+                {% csrf_token %}
+                <!-- minus -->
+                <button type="submit" name="delta" value="-1" class="btn btn-sm qty-btn"
+                        aria-label="Decrease quantity"
+                        {% if item.qty <= 1 %}disabled{% endif %}>−</button>
+
+                <!-- value (also allows manual edit) -->
+                <input type="number" name="quantity" value="{{ item.qty }}" min="1"
+                       class="form-control form-control-sm qty-input"
+                       aria-label="Quantity">
+
+                <!-- plus -->
+                <button type="submit" name="delta" value="1" class="btn btn-sm qty-btn"
+                        aria-label="Increase quantity">＋</button>
+              </form>
+            </td>
+
+            <td class="text-end">₹ {{ item.price|floatformat:2 }}</td>
+            <td class="text-end">₹ {{ item.subtotal|floatformat:2 }}</td>
+
+            <td class="text-end">
+              <form method="post" action="{% url 'cart:remove' item.product_id %}">
+                {% csrf_token %}
+                <button class="btn btn-sm btn-outline-danger" type="submit">Remove</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Totals card -->
+    <div class="card totals-card p-3 p-md-4 mb-3">
+      <div class="totals-row muted">
+        <span>Items Subtotal</span>
+        <span>₹ {{ cart_subtotal|floatformat:2 }}</span>
+      </div>
+      <div class="totals-row muted">
+        <span>Tax ({{ tax_rate_pct }}%)</span>
+        <span>₹ {{ tax_amount|floatformat:2 }}</span>
+      </div>
+      <div class="totals-row muted">
+        <span>Shipping{% if shipping_free_note %} <small class="text-success">({{ shipping_free_note }})</small>{% endif %}</span>
+        <span>₹ {{ shipping_amount|floatformat:2 }}</span>
+      </div>
+      <div class="totals-divider"></div>
+      <div class="totals-row grand">
+        <span>Total</span>
+        <span>₹ {{ grand_total|floatformat:2 }}</span>
+      </div>
+    </div>
+
+    <div class="d-flex gap-2">
+      <a href="{% url 'catalog:product_list' %}" class="btn btn-light">← Continue Shopping</a>
+      <a href="{% url 'orders:checkout' %}" class="btn btn-brand">Proceed to Checkout</a>
+    </div>
+  {% else %}
+    <p>Your cart is empty.</p>
+    <a href="{% url 'catalog:product_list' %}" class="btn btn-brand">Browse Products</a>
+  {% endif %}
+</div>
+{% endblock %}

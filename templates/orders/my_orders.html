@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}My Orders – Ai-Aero{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h1 class="h3 mb-4">My Orders</h1>
+
+  {% if orders %}
+    <div class="list-group">
+      {% for o in orders %}
+      <div class="list-group-item p-4 mb-3 shadow-sm rounded-3">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <div>
+            <div class="fw-semibold">Order #{{ o.id }}</div>
+            <div class="text-muted small">{{ o.created_at|date:"d M Y, h:i A" }}</div>
+          </div>
+          <div class="text-end">
+            <div class="badge bg-secondary">{{ o.status|capfirst }}</div>
+            <div class="fw-bold mt-1">₹ {{ o.total }}</div>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table align-middle mb-3">
+            <thead>
+              <tr class="small text-uppercase text-muted">
+                <th>Product</th>
+                <th class="text-center">Qty</th>
+                <th class="text-end">Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for it in o.item_list %}
+              <tr>
+                <td>
+                  <div class="fw-semibold">{{ it.product.name|default:it.product }}</div>
+                  <div class="text-muted small">
+                    SKU: {{ it.product.sku|default:it.product.id }}
+                  </div>
+                </td>
+                <td class="text-center">{{ it.quantity }}</td>
+                <td class="text-end">₹ {{ it.price }}</td>
+              </tr>
+              {% empty %}
+              <tr><td colspan="3" class="text-muted">No items found.</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="d-flex justify-content-end">
+          <a class="btn btn-outline-primary btn-sm"
+             href="{% url 'orders:order_detail' o.id %}">
+            View details
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-info">You haven’t placed any orders yet.</div>
+  {% endif %}
+</div>
+{% endblock %}

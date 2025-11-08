@@ -1,0 +1,249 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+<style>
+  :root{ --brand:#002244; }
+  .btn-brand{ background:var(--brand); color:#fff; border-color:var(--brand); }
+  .btn-brand:hover{ filter:brightness(1.05); }
+  .card-shadow{ box-shadow:0 10px 25px rgba(0,0,0,.06), 0 4px 12px rgba(0,0,0,.05); }
+  .address-card{ border:1.5px solid #e5e7eb; border-radius:14px; padding:14px; transition:border-color .2s, box-shadow .2s; }
+  .address-card input[type="radio"]{ transform:translateY(2px); margin-right:8px; }
+  .address-card.active{ border-color:var(--brand); box-shadow:0 0 0 4px rgba(0,34,68,.08); }
+  .mini-img{ width:56px; height:56px; border-radius:10px; object-fit:cover; background:#f3f4f6; }
+  .line{ height:1px; background:#eef0f4; }
+  .totals dt{ color:#6b7280; }
+  .totals dd{ margin:0; }
+  .address-actions { gap:8px; }
+</style>
+
+<div class="container py-5">
+  <h2 class="mb-4">Checkout</h2>
+
+  {% if cart.count == 0 %}
+    <div class="alert alert-info">Your cart is empty.</div>
+    <a href="{% url 'core:home' %}" class="btn btn-brand">← Continue Shopping</a>
+  {% else %}
+
+  <form method="post" action="">
+    {% csrf_token %}
+
+    <div class="row g-4">
+      <!-- Left: Address selection -->
+      <div class="col-lg-7">
+        <div class="card card-shadow border-0">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h4 class="card-title mb-0">Shipping Address</h4>
+              <button type="button" class="btn btn-sm btn-brand" data-bs-toggle="modal" data-bs-target="#addAddressModal">
+                + Add New Address
+              </button>
+            </div>
+
+            {% if addresses %}
+              <div class="d-grid gap-3">
+                {% for a in addresses %}
+                  <label class="address-card d-flex align-items-start {% if a.is_default or forloop.first %}active{% endif %}">
+                    <input type="radio" name="address_id" value="{{ a.id }}" {% if a.is_default or forloop.first %}checked{% endif %}>
+                    <div class="flex-grow-1">
+                      <div class="d-flex justify-content-between">
+                        <div>
+                          <div class="fw-semibold">{{ a.full_name }}</div>
+                          <div class="text-muted small">
+                            {{ a.line1 }}{% if a.line2 %}, {{ a.line2 }}{% endif %}, {{ a.city }}, {{ a.state }} – {{ a.pincode }}, {{ a.country }}
+                          </div>
+                          {% if a.phone %}
+                            <div class="text-muted small">Phone: {{ a.phone }}</div>
+                          {% endif %}
+                          {% if a.is_default %}
+                            <span class="badge rounded-pill ms-0 mt-2" style="background:#e7efff;color:#1e3a8a;">Default</span>
+                          {% endif %}
+                        </div>
+                        <div class="address-actions d-flex">
+                          <button type="button"
+                                  class="btn btn-sm btn-outline-secondary"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#editAddressModal"
+                                  data-id="{{ a.id }}"
+                                  data-full_name="{{ a.full_name|escape }}"
+                                  data-line1="{{ a.line1|escape }}"
+                                  data-line2="{{ a.line2|default_if_none:''|escape }}"
+                                  data-city="{{ a.city|escape }}"
+                                  data-state="{{ a.state|escape }}"
+                                  data-pincode="{{ a.pincode|escape }}"
+                                  data-country="{{ a.country|escape }}"
+                                  data-phone="{{ a.phone|default_if_none:''|escape }}"
+                                  data-default="{{ a.is_default|yesno:'1,0' }}">
+                            Edit
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </label>
+                {% endfor %}
+              </div>
+            {% else %}
+              <div class="alert alert-warning mb-0">
+                You don’t have any saved addresses. Use “Add New Address” to create one.
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Order summary -->
+      <div class="col-lg-5">
+        <div class="card card-shadow border-0">
+          <div class="card-body">
+            <h4 class="card-title mb-3">Order Summary</h4>
+
+            <!-- Items -->
+            <div class="d-grid gap-3 mb-3">
+              {% for item in cart %}
+                <div class="d-flex align-items-center">
+                  <div class="me-3">
+                    {% with item.product.images.all.0 as img %}
+                      {% if img %}
+                        <img src="{{ img.image.url }}" alt="{{ img.alt|default:item.product.name }}" class="mini-img">
+                      {% else %}
+                        <img src="{% static 'assets/img/placeholder-4x3.jpg' %}" alt="{{ item.product.name }}" class="mini-img">
+                      {% endif %}
+                    {% endwith %}
+                  </div>
+                  <div class="flex-grow-1">
+                    <div class="fw-semibold">{{ item.product.name }}</div>
+                    <div class="text-muted small">Qty: {{ item.qty }}</div>
+                  </div>
+                  <div class="text-end fw-semibold">₹ {{ item.subtotal }}</div>
+                </div>
+                {% if not forloop.last %}<div class="line"></div>{% endif %}
+              {% endfor %}
+            </div>
+
+            <!-- Totals -->
+            <dl class="row totals">
+              <dt class="col-6">Subtotal</dt>
+              <dd class="col-6 text-end">₹ {{ cart_subtotal|floatformat:2 }}</dd>
+
+              <dt class="col-6">Tax (GST {{ tax_rate_pct }}%)</dt>
+              <dd class="col-6 text-end">₹ {{ tax|floatformat:2 }}</dd>
+
+              <dt class="col-6">Shipping</dt>
+              <dd class="col-6 text-end">
+                {% if shipping == 0 and cart_subtotal > 0 %}
+                  <span class="text-success">Free</span>
+                {% else %}
+                  ₹ {{ shipping|floatformat:2 }}
+                {% endif %}
+              </dd>
+
+              <div class="line my-2"></div>
+
+              <dt class="col-6 fw-bold">Total</dt>
+              <dd class="col-6 text-end fw-bold">₹ {{ total|floatformat:2 }}</dd>
+            </dl>
+
+            {% if shipping == 0 and cart_subtotal > 0 %}
+              <div class="text-success small mb-2">Free shipping applied on orders above ₹{{ ship_free_over|floatformat:0 }}.</div>
+            {% elif cart_subtotal and cart_subtotal < ship_free_over %}
+              <div class="text-muted small mb-2">Flat shipping ₹{{ ship_flat|floatformat:0 }}.
+                Free over ₹{{ ship_free_over|floatformat:0 }}.</div>
+            {% endif %}
+
+            <button type="submit" class="btn btn-brand w-100 mt-2">Place order & Continue to Payment</button>
+            <a href="{% url 'core:home' %}" class="btn btn-light w-100 mt-2">← Continue Shopping</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  {% endif %}
+</div>
+
+{# ----------------------- Add Address Modal ----------------------- #}
+<div class="modal fade" id="addAddressModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <form method="post" action="{% url 'accounts:address_create' %}" class="modal-content">
+      {% csrf_token %}
+      <div class="modal-header">
+        <h5 class="modal-title">Add New Address</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {% include 'accounts/_address_fields.html' %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-brand">Save Address</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{# ----------------------- Edit Address Modal ---------------------- #}
+<div class="modal fade" id="editAddressModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <form method="post" action="{% url 'accounts:address_update' %}" class="modal-content" id="editAddressForm">
+      {% csrf_token %}
+      <input type="hidden" name="id" id="edit_id">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Address</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {% include 'accounts/_address_fields.html' with prefix="edit_" %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-brand">Update Address</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  // highlight the selected address card
+  document.querySelectorAll('.address-card input[type="radio"]').forEach(r => {
+    r.addEventListener('change', () => {
+      document.querySelectorAll('.address-card').forEach(c => c.classList.remove('active'));
+      r.closest('.address-card').classList.add('active');
+    });
+  });
+
+  // Populate Edit Address modal from data-* attributes
+  const editModal = document.getElementById('editAddressModal');
+  if (editModal) {
+    editModal.addEventListener('show.bs.modal', function (event) {
+      const btn = event.relatedTarget;
+      if (!btn) return;
+
+      const data = (k) => btn.getAttribute('data-' + k) || '';
+
+      document.getElementById('edit_id').value = data('id');
+
+      // plain fields
+      const map = {
+        'full_name': 'edit_full_name',
+        'line1': 'edit_line1',
+        'line2': 'edit_line2',
+        'city': 'edit_city',
+        'state': 'edit_state',
+        'pincode': 'edit_pincode',
+        'country': 'edit_country',
+        'phone': 'edit_phone'
+      };
+      Object.entries(map).forEach(([src, dest]) => {
+        const el = document.getElementById(dest);
+        if (el) el.value = data(src);
+      });
+
+      // default checkbox
+      const def = document.getElementById('edit_is_default');
+      if (def) def.checked = (data('default') === '1');
+    });
+  }
+</script>
+{% endblock %}

@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+  <body style="font-family: Arial, sans-serif; background:#f6f7fb; padding:24px;">
+    <table width="100%" cellspacing="0" cellpadding="0" style="max-width:640px; margin:auto; background:#fff; border-radius:10px; padding:24px;">
+      <tr>
+        <td style="text-align:center;">
+          <h2 style="margin:0 0 6px;">Thanks for your order!</h2>
+          <div style="color:#555;">We received your order and are processing it.</div>
+          <hr style="border:none;border-top:1px solid #eee; margin:18px 0;">
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <p style="margin:0 0 8px;"><strong>Order ID:</strong> #{{ order.id }}</p>
+          <p style="margin:0 0 8px;"><strong>Placed on:</strong> {{ order.created_at|date:"M d, Y, g:i a" }}</p>
+          <p style="margin:0 0 8px;"><strong>Status:</strong> Paid</p>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <h3 style="margin:18px 0 8px;">Items</h3>
+          <table width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
+            <thead>
+              <tr>
+                <th align="left"  style="padding:8px;border-bottom:1px solid #eee;">Product</th>
+                <th align="center" style="padding:8px;border-bottom:1px solid #eee;">Qty</th>
+                <th align="right" style="padding:8px;border-bottom:1px solid #eee;">Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for i in items %}
+              <tr>
+                <td style="padding:8px;border-bottom:1px solid #f2f2f2;">{{ i.name }}</td>
+                <td align="center" style="padding:8px;border-bottom:1px solid #f2f2f2;">{{ i.qty }}</td>
+                <td align="right" style="padding:8px;border-bottom:1px solid #f2f2f2;">₹ {{ i.price }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
+          <!-- Totals -->
+          <table width="100%" cellspacing="0" cellpadding="0" style="margin-top:12px; border-collapse:collapse;">
+            <tr>
+              <td></td>
+              <td align="right" style="padding:4px 0;">Price (Subtotal)</td>
+              <td align="right" style="padding:4px 0; width:120px;">₹ {{ subtotal_str }}</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td align="right" style="padding:4px 0;">Tax{% if tax_rate_pct %} ({{ tax_rate_pct }}%){% endif %}</td>
+              <td align="right" style="padding:4px 0;">₹ {{ tax_str }}</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td align="right" style="padding:4px 0;">Shipping</td>
+              <td align="right" style="padding:4px 0;">₹ {{ shipping_str }}</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td align="right" style="padding:6px 0;"><strong>Grand Total</strong></td>
+              <td align="right" style="padding:6px 0;"><strong>₹ {{ total_str }}</strong></td>
+            </tr>
+          </table>
+
+          <p style="margin-top:12px;">You can find your invoice attached as a PDF.</p>
+          <p style="margin-top:12px;">— Team Ai-Aero</p>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

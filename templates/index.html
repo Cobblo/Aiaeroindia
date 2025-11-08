@@ -1,0 +1,485 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Aiaeroindia{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section id="hero" class="hero section dark-background">
+  <img src="{% static 'assets/img/hero-bg-2.jpg' %}" alt="" class="hero-bg">
+
+  <div class="container">
+    <div class="row gy-4 justify-content-between">
+      <div class="col-lg-4 order-lg-last hero-img" data-aos="zoom-out" data-aos-delay="100">
+        <img src="{% static 'assets/img/OFF (1).png' %}" class="img-fluid animated" alt="">
+      </div>
+
+      <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-in">
+        <h1>Transforming Vision into Reality with <span>Future Technology</span></h1>
+        <p>We are a team of innovators building intelligent hardware and smart software for the future.</p>
+        <div class="d-flex">
+          <a href="#contact" class="btn-get-started">Get Started</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <svg class="hero-waves" xmlns="http://www.w3.org/2000/svg" viewBox="0 24 150 28" preserveAspectRatio="none">
+    <defs>
+      <path id="wave-path" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"></path>
+    </defs>
+    <g class="wave1"><use href="#wave-path" x="50" y="3"></use></g>
+    <g class="wave2"><use href="#wave-path" x="50" y="0"></use></g>
+    <g class="wave3"><use href="#wave-path" x="50" y="9"></use></g>
+  </svg>
+</section>
+<!-- /Hero Section -->
+
+<!-- About Section -->
+<section id="about" class="about section">
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row align-items-xl-center gy-5">
+      <div class="col-xl-5 content">
+        <h3>About Us</h3>
+        <h2>Welcome to Ai-Aero India Private Limited</h2>
+        <p>
+          At Ai-Aero India, we believe in the power of technology to transform the world. Our team of
+          experts is driven by a passion for innovation, and we are constantly exploring new ideas and
+          approaches to push the boundaries of what is possible. With a deep commitment to excellence
+          and a focus on the future, we develop technologies that are as reliable as they are revolutionary.
+        </p>
+
+        <div class="icon-box icon-like mt-4" data-aos="fade-up" data-aos-delay="180">
+          <h3>Multi-Path Connectivity</h3>
+          <p>
+            Multi-path connectivity—LoRa, Wi-Fi/BLE, cellular/5G, and optional satellite.
+            Auto-switching, end-to-end security, and low power deliver reliable data anywhere.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-xl-7">
+        <div class="row gy-4 icon-boxes">
+          <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="icon-box">
+              <h3>Artificial Intelligence</h3>
+              <p>Systems designed to process vast data, learn, and make intelligent decisions, driving
+                automation, enhancing decision-making, and fostering innovation.</p>
+            </div>
+          </div>
+
+          <div class="col-md-6" data-aos="fade-up" data-aos-delay="300">
+            <div class="icon-box">
+              <h3>Machine Learning</h3>
+              <p>Adaptive algorithms that analyze data, predict outcomes, and optimize operations,
+                ensuring competitive advantage.</p>
+            </div>
+          </div>
+
+          <div class="col-md-6" data-aos="fade-up" data-aos-delay="400">
+            <div class="icon-box">
+              <h3>Neural Networks</h3>
+              <p>Technology that mimics the brain’s pattern recognition, solving complex problems and
+                enhancing decision-making with precision.</p>
+            </div>
+          </div>
+
+          <div class="col-md-6" data-aos="fade-up" data-aos-delay="500">
+            <div class="icon-box">
+              <h3>Intelligent Automation</h3>
+              <p>Solutions that streamline tasks, adapt to changes, and increase efficiency and
+                responsiveness in operations.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- /About Section -->
+
+<!-- Details Section -->
+<section id="details" class="details section">
+  <div class="container section-title" data-aos="fade-up">
+    <div><span>Our</span> <span class="description-title">Approach</span></div>
+  </div>
+
+  <div class="container">
+
+    <div class="row gy-4 align-items-center features-item">
+      <div class="col-md-5 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="100">
+        <img src="{% static 'assets/img/brain(1).png' %}" class="img-fluid" alt="">
+      </div>
+      <div class="col-md-7" data-aos="fade-up" data-aos-delay="100">
+        <h3>In a rapidly evolving world, we understand the importance of staying ahead of the curve. Our approach is rooted in innovation and adaptability.</h3>
+        <ul class="mb-0">
+          <li>Visionary Thinking: We architect future trends and develop technologies shaping next-gen industries.</li>
+          <li>Intelligent Design: Precision solutions that enhance efficiency without compromising simplicity.</li>
+          <li>Seamless Integration: Built to blend into existing infrastructures and amplify your potential.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row gy-4 align-items-center features-item">
+      <div class="col-md-5 order-1 order-md-2 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="200">
+        <img src="{% static 'assets/img/ai_gpt(1).png' %}" alt="" class="img-fluid">
+      </div>
+      <div class="col-md-7 order-2 order-md-1" data-aos="fade-up" data-aos-delay="200">
+        <h3>Why Us</h3>
+        <p>• Pioneers Of Technology: advanced, future-ready solutions for complex environments.</p>
+        <p>• Expert Team: seasoned professionals combining innovation with deep technical rigor.</p>
+        <p>• Tailored Solutions: flexible and customizable for your specific requirements.</p>
+        <p>• Future-Focused: continuous innovation aligned with evolving demands.</p>
+      </div>
+    </div>
+
+    <div class="row gy-4 align-items-center features-item">
+      <div class="col-md-5 d-flex align-items-center" data-aos="zoom-out">
+        <img src="{% static 'assets/img/drone(1).png' %}" class="img-fluid" alt="">
+      </div>
+      <div class="col-md-7" data-aos="fade-up">
+        <h3>Our Vision</h3>
+        <p>At Ai-Aero India, our vision is to lead the charge in creating a future where technology enhances every aspect of life. We strive to be at the forefront of this transformation, delivering solutions that not only solve today’s problems but also anticipate and address the challenges of tomorrow.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- /Details Section -->
+
+<!-- Featured Products -->
+<section id="featured-products" class="products-wrap">
+  <style>
+    .products-wrap{margin:40px auto;max-width:1200px;padding:0 12px;}
+    .hdr{text-align:center;margin-bottom:22px}
+    .hdr h2{font-weight:800;margin-bottom:6px}
+    .hdr p{color:#6b7280;margin:0}
+    .fp-grid{display:flex;flex-wrap:wrap;gap:30px;justify-content:center}
+    .fp-card{width:250px;border:1px solid #eee;border-radius:10px;background:#fff;padding:15px;text-align:center;box-shadow:0 4px 8px rgba(0,0,0,.05);position:relative;display:flex;flex-direction:column;min-height:100%;transition:transform .18s ease, box-shadow .18s ease;}
+    .fp-card:hover{transform:translateY(-2px);box-shadow:0 10px 20px rgba(0,0,0,.08);}
+    .fp-thumb{border-radius:10px;overflow:hidden;background:#f7f8fb;margin-bottom:10px;}
+    .fp-thumb img{width:100%;height:200px;object-fit:cover;object-position:center;display:block;}
+    .fp-name{font-weight:700;font-size:1.05rem;color:#111827;margin:6px 0 4px;line-height:1.3;text-decoration:none;display:block;min-height:2.4em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+    .fp-name:hover{color:#0b1220;}
+    .fp-price{color:#d23a24;font-weight:800;margin-bottom:12px;}
+    .fp-btn{background:#002244;color:#fff;border:0;border-radius:8px;padding:10px 14px;font-weight:700;width:100%;position:relative;z-index:2;}
+    .fp-btn[disabled]{opacity:.6;cursor:not-allowed;}
+    .fp-btn:hover{filter:brightness(1.03);}
+  </style>
+
+  <div class="container">
+    <div class="hdr">
+      <h2>Featured Products</h2>
+    </div>
+
+    {% if featured_products %}
+      <div class="fp-grid">
+        {% for p in featured_products %}
+          <article class="fp-card">
+            <a href="{{ p.get_absolute_url }}" class="fp-thumb">
+              {% with img=p.images.all.0 %}
+                {% if img %}
+                  <img src="{{ img.image.url }}" alt="{{ img.alt|default:p.name }}">
+                {% else %}
+                  <img src="{% static 'assets/img/placeholder-4x3.jpg' %}" alt="{{ p.name }}">
+                {% endif %}
+              {% endwith %}
+            </a>
+
+            <a href="{{ p.get_absolute_url }}" class="fp-name">{{ p.name }}</a>
+            <div class="fp-price">₹{{ p.price|floatformat:0 }}</div>
+
+            {% if p.stock|default:0 > 0 %}
+              <form method="post" action="{% url 'cart:add' p.id %}" class="mt-auto">
+                {% csrf_token %}
+                <input type="hidden" name="quantity" value="1">
+                <input type="hidden" name="next" value="{% url 'cart:view' %}">
+                <button type="submit" class="fp-btn">Add to Cart</button>
+              </form>
+            {% else %}
+              <button type="button" class="fp-btn" disabled>Out of Stock</button>
+            {% endif %}
+            <a href="{{ p.get_absolute_url }}" class="stretched-link" aria-label="{{ p.name }}"></a>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-center text-muted">No featured products yet.</p>
+    {% endif %}
+  </div>
+</section>
+<!-- /Featured Products -->
+
+<!-- Team / Testimonials Section -->
+<section id="testimonials" class="testimonials section dark-background">
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Team</h2>
+    <div><span>Check Our</span> <span class="description-title">Team</span></div>
+  </div>
+
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="swiper init-swiper">
+      <script type="application/json" class="swiper-config">
+        {
+          "loop": true,
+          "speed": 600,
+          "autoplay": { "delay": 5000 },
+          "slidesPerView": "auto",
+          "pagination": { "el": ".swiper-pagination", "type": "bullets", "clickable": true }
+        }
+      </script>
+
+      <div class="swiper-wrapper">
+        {% if team_members %}
+          {% for m in team_members|slice:":3" %}
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                {% if m.photo %}
+                  <img src="{{ m.photo.url }}" alt="{{ m.name }}" class="rounded-circle mb-3" style="width:72px;height:72px;object-fit:cover;">
+                {% endif %}
+                <h3>{{ m.name }}</h3>
+                <h4>{{ m.role }}</h4>
+                {% if m.quote %}
+                  <p><i class="bi bi-quote quote-icon-left"></i>
+                    <span>{{ m.quote }}</span>
+                    <i class="bi bi-quote quote-icon-right"></i>
+                  </p>
+                {% endif %}
+                {% if m.skills %}
+                  <div class="mt-2 small text-light" style="white-space:pre-line; line-height:1.6;">
+                    {{ m.skills }}
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="swiper-slide">
+            <div class="testimonial-item">
+              <h3>Team coming soon</h3>
+              <h4>—</h4>
+              <p><i class="bi bi-quote quote-icon-left"></i>
+                <span>We’re adding profiles. Check back shortly.</span>
+                <i class="bi bi-quote quote-icon-right"></i>
+              </p>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="swiper-pagination"></div>
+
+      <div class="text-center mt-4">
+        <a href="{% url 'team:list' %}" class="btn btn-outline-light px-4 py-2">
+          Know more about our team
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /Team Section -->
+
+<!-- Videos Section (thumbnail + red YouTube play) -->
+<section id="videos" class="section" style="padding:60px 0;">
+  <style>
+    #videos .section-title { text-align:center; }
+    #videos .vid-card { max-width: 760px; width:100%; }
+
+    .yt-thumb { display:flex; justify-content:center; }
+    .yt-thumb-link {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      max-width: 720px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .yt-thumb-link:hover { transform: scale(1.02); box-shadow: 0 8px 20px rgba(0,0,0,0.20); }
+    .yt-thumb-img { display:block; width:100%; height:auto; }
+
+    /* Authentic red play button */
+    .yt-play-icon {
+      position: absolute;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      width: 68px; height: 48px;
+      background: #ff0000;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    }
+    .yt-play-icon::before {
+      content: "";
+      position: absolute;
+      left: 26px; top: 12px;
+      border-style: solid;
+      border-width: 12px 0 12px 18px;
+      border-color: transparent transparent transparent white;
+    }
+    .yt-thumb-link:hover .yt-play-icon {
+      filter: brightness(1.15);
+      transform: translate(-50%, -50%) scale(1.08);
+    }
+  </style>
+
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Videos</h2>
+    <div><span>Watch our</span> <span class="description-title">Latest Videos</span></div>
+  </div>
+
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    {% if videos %}
+      <div class="row gy-4 justify-content-center">
+        {% for v in videos %}
+          <div class="col-lg-8 d-flex justify-content-center">
+            <div class="card border-0 shadow-sm h-100 vid-card">
+
+              <div class="p-3">
+                {% if v.youtube_id %}
+                  <!-- Thumbnail linking to YouTube -->
+                  <div class="yt-thumb">
+                    <a class="yt-thumb-link"
+                       href="{% if v.youtube_url %}{{ v.youtube_url }}{% else %}https://www.youtube.com/watch?v={{ v.youtube_id }}{% endif %}"
+                       target="_blank" rel="noopener">
+                      <img class="yt-thumb-img"
+                           src="https://img.youtube.com/vi/{{ v.youtube_id }}/hqdefault.jpg"
+                           alt="{{ v.title }}">
+                      <span class="yt-play-icon"></span>
+                    </a>
+                  </div>
+
+                {% elif v.youtube_embed_url %}
+                  <!-- Fallback to iframe if no ID -->
+                  <div class="ratio ratio-16x9" style="border-radius:10px; overflow:hidden;">
+                    <iframe
+                      src="{{ v.youtube_embed_url }}?rel=0&modestbranding=1&playsinline=1"
+                      title="{{ v.title }}"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowfullscreen></iframe>
+                  </div>
+
+                {% elif v.video_file %}
+                  <!-- Local file fallback -->
+                  <video controls preload="metadata"
+                         poster="{{ v.thumbnail.url|default:'' }}"
+                         style="width:100%; height:auto; border-radius:10px;">
+                    <source src="{{ v.video_file.url }}" type="video/mp4">
+                  </video>
+                {% endif %}
+              </div>
+
+              <div class="card-body text-center">
+                <h5 class="card-title mb-1">{{ v.title }}</h5>
+                {% if v.subtitle %}
+                  <p class="text-muted">{{ v.subtitle }}</p>
+                {% endif %}
+                
+              </div>
+
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-center text-muted">No videos uploaded yet.</p>
+    {% endif %}
+  </div>
+</section>
+<!-- /Videos Section -->
+
+<!-- Contact Section -->
+<section id="contact" class="contact section">
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Contact</h2>
+    <div><span>Check Our</span> <span class="description-title">Contact</span></div>
+  </div>
+
+  <div class="container" data-aos="fade" data-aos-delay="100">
+    <div class="row gy-4">
+
+      <div class="col-lg-4">
+        <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="200">
+          <i class="bi bi-geo-alt flex-shrink-0"></i>
+          <div>
+            <h3>Address</h3>
+            <p>58A, First floor, Thulasi street, Aishwarya garden, Kattupakkam, Chennai-56</p>
+          </div>
+        </div>
+
+        <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="300">
+          <i class="bi bi-telephone flex-shrink-0"></i>
+          <div>
+            <h3>Call Us</h3>
+            <p>+91 9445360402</p>
+          </div>
+        </div>
+
+        <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="400">
+          <i class="bi bi-envelope flex-shrink-0"></i>
+          <div>
+            <h3>Email Us</h3>
+            <p>info@aiaeroindia.com</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-8">
+        <form id="contactForm" action="https://api.web3forms.com/submit" method="POST">
+          <input type="hidden" name="access_key" value="eec3ddf6-ef4b-4b3c-93e8-818345f98b1a">
+          <div class="row gy-4">
+            <div class="col-md-6">
+              <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+            </div>
+            <div class="col-md-6">
+              <input type="email" class="form-control" name="email" placeholder="Your Email" required>
+            </div>
+            <div class="col-md-12">
+              <input type="text" class="form-control" name="subject" placeholder="Subject" required>
+            </div>
+            <div class="col-md-12">
+              <textarea class="form-control" name="message" rows="6" placeholder="Message" required></textarea>
+            </div>
+            <div class="col-md-12 text-center">
+              <div id="formResponse"></div>
+              <button type="submit">Send Message</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- /Contact Section -->
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.getElementById("contactForm")?.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+
+    fetch("https://api.web3forms.com/submit", { method: "POST", body: formData })
+      .then(r => r.json())
+      .then(data => {
+        if (data.success) {
+          document.getElementById("formResponse").innerHTML =
+            '<div style="color: green; font-weight: 600; margin-top: 20px;">✅ Your message has been sent successfully!</div>';
+          form.reset();
+        } else {
+          document.getElementById("formResponse").innerHTML =
+            '<div style="color: red; font-weight: 600; margin-top: 20px;">❌ Something went wrong. Please try again later.</div>';
+        }
+      })
+      .catch(() => {
+        document.getElementById("formResponse").innerHTML =
+          '<div style="color: red; font-weight: 600; margin-top: 20px;">⚠️ Error sending message.</div>';
+      });
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Our Customers — Ai-Aero{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="section-title" data-aos="fade-up">
+      <h2>Customers</h2>
+      <div><span>Our</span> <span class="description-title">Customers</span></div>
+    </div>
+
+    {% if customers %}
+      <ul class="list-group list-group-flush shadow-sm" data-aos="fade-up" data-aos-delay="100">
+        {% for c in customers %}
+          <li class="list-group-item fs-5">{{ c.name }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-muted" data-aos="fade-up">No customers added yet.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
