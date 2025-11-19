@@ -32,6 +32,7 @@ def _extract_youtube_id(url: str) -> str:
 
 
 class Post(models.Model):
+    # Basic fields
     title        = models.CharField(max_length=200)
     slug         = models.SlugField(max_length=230, unique=True, blank=True)
     excerpt      = models.TextField(blank=True)
@@ -39,18 +40,29 @@ class Post(models.Model):
     is_published = models.BooleanField(default=True)
     created_at   = models.DateTimeField(auto_now_add=True)
 
+    # Main blog image (upload via admin)
+    image = models.ImageField(
+        upload_to="blog/",
+        blank=True,
+        null=True,
+        help_text="Main image for this blog post."
+    )
+
     # YouTube
-    youtube_url        = models.URLField(
+    youtube_url = models.URLField(
         blank=True,
         help_text="Paste any YouTube link (watch / youtu.be / shorts)."
     )
-    youtube_id         = models.CharField(max_length=32, blank=True, editable=False)
-    youtube_embed_url  = models.URLField(blank=True, editable=False)
+    youtube_id        = models.CharField(max_length=32, blank=True, editable=False)
+    youtube_embed_url = models.URLField(blank=True, editable=False)
 
     # Choose embed vs thumbnail; default = thumbnail (safer)
-    show_embed_player  = models.BooleanField(
+    show_embed_player = models.BooleanField(
         default=False,
-        help_text="If ON, try to show the embedded YouTube player. If OFF, show a clickable thumbnail."
+        help_text=(
+            "If ON, try to show the embedded YouTube player. "
+            "If OFF, show a clickable thumbnail."
+        ),
     )
 
     def save(self, *args, **kwargs):
@@ -61,9 +73,11 @@ class Post(models.Model):
         # Compute YouTube ID + embed URL
         vid = _extract_youtube_id(self.youtube_url)
         self.youtube_id = vid or ""
-        self.youtube_embed_url = f"https://www.youtube.com/embed/{vid}" if vid else ""
+        self.youtube_embed_url = (
+            f"https://www.youtube.com/embed/{vid}" if vid else ""
+        )
 
         super().save(*args, **kwargs)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.title

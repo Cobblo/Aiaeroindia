@@ -13,12 +13,23 @@ class PostAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ("Content", {
-            
-            "fields": ("title", "slug", "excerpt", "content", "is_published")
+            "fields": (
+                "title",
+                "slug",
+                "excerpt",
+                "image",        # 👈 NEW: image upload field
+                "content",
+                "is_published",
+            )
         }),
         ("YouTube", {
             "description": "Safer default is thumbnail. Turn on embed only if the video allows embedding.",
-            "fields": ("youtube_url", "youtube_id", "youtube_embed_url", "show_embed_player"),
+            "fields": (
+                "youtube_url",
+                "youtube_id",
+                "youtube_embed_url",
+                "show_embed_player",
+            ),
         }),
         ("Meta", {
             "fields": ("created_at",),

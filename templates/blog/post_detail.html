@@ -1,114 +1,63 @@
 {% extends "base.html" %}
 {% load static %}
-
-{% block title %}{{ post.title }} — Blog{% endblock %}
+{% block title %}{{ post.title }}{% endblock %}
 
 {% block content %}
-<style>
-  .post-wrap {
-    max-width: 980px;
-    margin: 0 auto;
-  }
+<section class="section-content padding-y bg">
+  <div class="container" style="max-width: 900px;">
 
-  .post-title {
-    font-weight: 800;
-    letter-spacing: .2px;
-    text-align: center;
-    text-transform: capitalize;
-  }
+    <!-- Post Header -->
+    <h1 style="font-weight: 800; color: #0b1220; margin-bottom: 0.5rem;">
+      {{ post.title }}
+    </h1>
 
-  .post-meta {
-    text-align: center;
-    color: #666;
-    margin-bottom: 20px;
-  }
+    {% if post.excerpt %}
+      <p style="color: #6b7280; font-size: 1.05rem; margin-bottom: 1.5rem;">
+        {{ post.excerpt }}
+      </p>
+    {% endif %}
 
-  .post-content {
-    font-size: 1.05rem;
-    line-height: 1.75;
-  }
+    <!-- ✅ Blog Image Display -->
+    {% if post.image %}
+      <div class="text-center mb-4">
+        <img src="{{ post.image.url }}"
+             alt="{{ post.title }}"
+             style="width:100%; max-width:720px; border-radius:16px;
+                    box-shadow:0 6px 18px rgba(0,0,0,0.15);">
+      </div>
+    {% endif %}
 
-  /* YouTube thumbnail layout */
-  .yt-thumb {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 25px;
-  }
-
-  .yt-thumb-link {
-    position: relative;
-    display: inline-block;
-    max-width: 720px;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-    transition: transform .2s ease;
-  }
-
-  .yt-thumb-link:hover {
-    transform: scale(1.02);
-  }
-
-  .yt-thumb-img {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
-
-  /* ✅ Real YouTube-style red play icon */
-  .yt-play-icon {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 68px;
-    height: 48px;
-    background: #ff0000; /* YouTube red */
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-  }
-
-  .yt-play-icon::before {
-    content: "";
-    position: absolute;
-    left: 26px;
-    top: 12px;
-    border-style: solid;
-    border-width: 12px 0 12px 18px;
-    border-color: transparent transparent transparent white; /* white triangle */
-  }
-
-  .yt-thumb-link:hover .yt-play-icon {
-    filter: brightness(1.15);
-    transform: translate(-50%, -50%) scale(1.08);
-  }
-</style>
-
-<div class="container py-5 post-wrap">
-  <h1 class="display-5 post-title mb-1">{{ post.title }}</h1>
-
-  <div class="post-meta">
-    <i class="bi bi-calendar"></i>
-    {{ post.created_at|date:"M d, Y" }}
-    {% if post.author %} &nbsp;•&nbsp; {{ post.author }}{% endif %}
-    {% if post.category %} &nbsp;•&nbsp; {{ post.category }}{% endif %}
-  </div>
-
-  {% if post.youtube_id %}
-    <div class="yt-thumb">
-      <a class="yt-thumb-link" href="https://www.youtube.com/watch?v={{ post.youtube_id }}" target="_blank" rel="noopener">
-        <img src="https://img.youtube.com/vi/{{ post.youtube_id }}/hqdefault.jpg" alt="{{ post.title }}" class="yt-thumb-img">
-        <span class="yt-play-icon"></span>
-      </a>
+    <!-- ✅ Post Content -->
+    <div class="post-content">
+      {{ post.content }}
     </div>
-  {% endif %}
 
-  <div class="post-content">
-    {{ post.content|linebreaks }}
+    <div class="mt-5 text-center">
+      <a href="{% url 'blog:list' %}" class="btn btn-outline-dark px-4 py-2">← Back to Blog</a>
+    </div>
   </div>
+</section>
 
-  <div class="text-center mt-4">
-    <a href="{% url 'blog:list' %}" class="btn btn-light">← Back to Blog</a>
-  </div>
-</div>
+<style>
+.post-content {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #1f2937;
+  white-space: pre-line;  /* keeps new lines and bullets */
+}
+
+.post-content ul {
+  margin: 0.8rem 0 1rem 1.5rem;
+  list-style-type: disc;
+}
+
+.post-content li {
+  margin-bottom: 6px;
+  line-height: 1.7;
+}
+
+.post-content p {
+  margin-bottom: 1rem;
+}
+</style>
 {% endblock %}

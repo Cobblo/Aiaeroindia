@@ -50,10 +50,10 @@
           {% endif %}
 
           {% if product.price %}
-            <h5 class="mb-0" style="color:#002244;">
+            <div style="color:#002244; font-size:.95rem; margin-bottom:.75rem;">
               ₹ {{ product.price|floatformat:0 }}
-              <small style="color:#555; font-weight:normal;">(inclusive of all taxes)</small>
-            </h5>
+              <span style="font-weight:normal;">(inclusive of all taxes)</span>
+            </div>
           {% endif %}
 
           {% if product.description %}
